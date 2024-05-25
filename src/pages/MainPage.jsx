@@ -1,4 +1,4 @@
-import Header from "@/components/MainPage/Header";
+import Header from "@/components/mainpage/Header";
 import { Outlet } from "react-router-dom";
 
 const MainPage = () => {

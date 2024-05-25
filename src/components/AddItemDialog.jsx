@@ -15,10 +15,7 @@ const AddItemDialog = () => {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button
-                    variant="outline"
-                    className="bg-green-200 max-w-[100px] w-full max-h-[250px] h-full"
-                >
+                <Button variant="outline" className="bg-green-200">
                     <Plus className="" />
                 </Button>
             </DialogTrigger>

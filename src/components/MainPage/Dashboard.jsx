@@ -1,5 +1,5 @@
-import AddItemList from "./AddItemList";
-import NutritionData from "./NutritionData";
+import AddItemList from "../AddItemList";
+import NutritionData from "../NutritionData";
 
 const Dashboard = () => {
     return (

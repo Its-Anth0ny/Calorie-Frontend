@@ -1,9 +1,9 @@
 import Welcome from "./pages/Welcome";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Dashboard from "./components/MainPage/Dashboard";
-import Profile from "./components/MainPage/Profile";
-import About from "./components/MainPage/About";
-import Contact from "./components/MainPage/Contact";
+import Dashboard from "./components/mainpage/Dashboard";
+import Profile from "./components/mainpage/Profile";
+import About from "./components/mainpage/About";
+import Contact from "./components/mainpage/Contact";
 import Footer from "./components/Footer";
 import MainPage from "./pages/MainPage";
 
