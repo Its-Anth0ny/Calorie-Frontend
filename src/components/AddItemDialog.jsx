@@ -9,6 +9,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { BACKEND_URL } from "@/utils/Constants";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Plus } from "lucide-react";
 import { useState } from "react";
@@ -61,7 +62,7 @@ const AddItemDialog = () => {
         try {
             // await fetchNutritionInfo();
             const response = await fetch(
-                "http://localhost:3000/api/user-food-intake",
+                `${BACKEND_URL}/api/user-food-intake`,
                 {
                     method: "POST",
                     headers: {
@@ -83,7 +84,10 @@ const AddItemDialog = () => {
                             servingSize: food.serving_weight_grams, // Assuming serving size is constant for all foods
                             calories: food.nf_calories,
                             proteins: food.nf_protein,
+                            carbs: food.nf_total_carbohydrate,
                             fats: food.nf_total_fat,
+                            fiber: food.nf_dietary_fiber,
+                            cholesterol: food.nf_cholesterol,
                             timestamp: new Date(),
                         }))
                     ),

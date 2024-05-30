@@ -5,6 +5,7 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Button } from "../ui/button";
+import { BACKEND_URL } from "@/utils/Constants";
 
 const Register = () => {
     const [show, setShow] = useState(false);
@@ -24,39 +25,6 @@ const Register = () => {
         weightGainRate: "",
     });
 
-    const decodeToken = () => {
-        const token = localStorage.getItem("token");
-        if (token) {
-            try {
-                const decoded = JSON.parse(atob(token.split(".")[1]));
-                if (decoded && decoded.userId) {
-                    setUserId(decoded.userId);
-                } else {
-                    console.error(
-                        "Error: Decoded token does not contain user information"
-                    );
-                }
-            } catch (error) {
-                console.error("Error decoding token:", error);
-            }
-        } else {
-            console.error("Token not found in local storage");
-        }
-    };
-
-    const sendDataToBackend = async () => {
-        try {
-            const backendUrl = `http://localhost:3000/api/v1/${userId}`;
-            const response = await axios.post(backendUrl, { userId });
-            console.log(
-                "Calculation result saved successfully:",
-                response.data
-            );
-        } catch (error) {
-            console.error("Error while sending POST request:", error);
-        }
-    };
-
     const handleSubmit = (e) => {
         e.preventDefault();
         setStep((prevStep) => prevStep + 1);
@@ -65,17 +33,36 @@ const Register = () => {
     const handleSubmit2 = async (e) => {
         e.preventDefault();
 
-        try {
-            const response = await axios.post(
-                "http://localhost:5000/api/v1/register",
-                userData
-            );
-            localStorage.setItem("token", response.data.token);
-            decodeToken();
-            setShow(true);
-        } catch (error) {
-            console.error("Sign Up error:", error.response.data);
-        }
+        const {
+            username,
+            email,
+            password,
+            age,
+            height,
+            weight,
+            targetWeight,
+            gender,
+            lifestyle,
+            weightLossRate,
+            weightGainRate,
+        } = userData;
+
+        await axios
+            .post(`${BACKEND_URL}/api/register`, {
+                username,
+                email,
+                password,
+                age,
+                height,
+                weight,
+                targetWeight,
+                gender,
+                lifestyle,
+                weightLossRate,
+                weightGainRate,
+            })
+            .then((window.location.href = "/login"))
+            .catch((err) => console.log(err));
     };
 
     const handleChange = (e) => {
@@ -84,15 +71,6 @@ const Register = () => {
             ...prevData,
             [name]: value,
         }));
-    };
-
-    const handleSubmit3 = async () => {
-        try {
-            await sendDataToBackend();
-            window.location.href = "/dashboard/:id";
-        } catch (error) {
-            console.error("Cannot reach dashboard:", error);
-        }
     };
 
     const renderFormFields = () => {
@@ -333,7 +311,7 @@ const Register = () => {
     return (
         <div>
             {show ? (
-                <Navigate to="/dashboard/:id" />
+                <Navigate to="/dashboard" />
             ) : (
                 <div className="grid min-h-screen grid-cols-12">
                     <div

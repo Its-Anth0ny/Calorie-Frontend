@@ -1,17 +1,60 @@
 import { Link } from "react-router-dom";
 import { ModeToggle } from "../mode-toggle";
+import { useDispatch } from "react-redux";
+import { setUserData } from "@/utils/userDataSlice";
+import { useEffect } from "react";
 
 const Header = () => {
+    const dispatch = useDispatch();
+    const decodeToken = (data, token) => {
+        try {
+            const decoded = JSON.parse(atob(token.split(".")[1]));
+            if (decoded && decoded.userId) {
+                dispatch(
+                    setUserData({
+                        userId: data.userData._id,
+                        username: data.userData.username,
+                        data: {
+                            gender: data.userData.gender,
+                            age: data.userData.age,
+                            weight: data.userData.weight,
+                            height: data.userData.height,
+                            targetWeight: data.userData.targetWeight,
+                            lifestyle: data.userData.lifestyle,
+                        },
+                    })
+                );
+            } else {
+                console.error(
+                    "Error: Decoded token does not contain user information"
+                );
+            }
+        } catch (error) {
+            console.error("Error decoding token:", error);
+        }
+    };
+
+    useEffect(() => {
+        const dataString = localStorage.getItem("Data");
+        const data = JSON.parse(dataString);
+        const token = data.token;
+        // console.log(data.userData);z
+
+        if (token) {
+            decodeToken(data, token);
+        }
+    }, []);
+
     return (
         <div className="w-full h-[75px] flex items-center justify-between px-6 py-4">
             <Link to="/" className="text-2xl font-bold">
                 FitSwipe
             </Link>
             <div className="flex items-center">
-                <Link to="/dashboard/:id" className="mr-4">
+                <Link to="/dashboard" className="mr-4">
                     Dashboard
                 </Link>
-                <Link to="/profile/:id" className="mr-4">
+                <Link to="/profile" className="mr-4">
                     Profile
                 </Link>
                 <Link to="/about" className="mr-4">

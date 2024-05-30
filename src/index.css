@@ -54,10 +54,10 @@
 @layer base {
     * {
         @apply border-border;
+        /* scrollbar-width: 0; */
     }
     body {
         @apply bg-background text-foreground;
-        scrollbar-width: 0;
     }
 }
 
@@ -128,6 +128,8 @@
     stroke: transparent;
 }
 
-body {
+body,
+* {
     font-family: "Poppins", sans-serif;
+    scrollbar-width: none;
 }

@@ -27,8 +27,8 @@ const App = () => {
             path: "/",
             element: <MainPage />,
             children: [
-                { path: "dashboard/:id", element: <Dashboard /> },
-                { path: "profile/:id", element: <Profile /> },
+                { path: "dashboard", element: <Dashboard /> },
+                { path: "profile", element: <Profile /> },
                 { path: "about", element: <About /> },
                 { path: "contact", element: <Contact /> },
             ],

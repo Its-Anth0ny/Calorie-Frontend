@@ -8,20 +8,21 @@ import {
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
 import { Avatar } from "../ui/avatar";
+import { useSelector } from "react-redux";
 
 const ProfilePage = () => {
+    const username = useSelector((state) => state.userData);
+    const userData = useSelector((state) => state.userData.data);
+    console.log(username);
     const user = {
-        name: "John Doe",
-        role: "Software Engineer",
-        avatar: "https://via.placeholder.com/150",
-        email: "johndoe@example.com",
-        phone: "(123) 456-7890",
-        currentWeight: "75kg",
-        targetWeight: "70kg",
-        height: "175cm",
-        daysUsing: 120,
-        bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.",
+        gender: userData.gender,
+        age: userData.age,
+        currentWeight: userData.weight,
+        targetWeight: userData.targetWeight,
+        height: userData.height,
+        lifestyle: userData.lifestyle,
     };
+    // console.log(user);
 
     return (
         <div className="min-h-screen p-6 ">
@@ -30,7 +31,7 @@ const ProfilePage = () => {
                     <CardHeader className="flex items-center justify-center p-6 text-white bg-gradient-to-r from-blue-500 to-teal-500">
                         <Avatar
                             className="w-24 h-24 border-4 border-white rounded-full"
-                            src={user.avatar}
+                            src={`https://ui-avatars.com/api/?name=${name}`}
                             alt="Profile Picture"
                         />
                         <div className="text-center">

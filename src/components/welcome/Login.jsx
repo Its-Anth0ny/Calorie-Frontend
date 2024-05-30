@@ -4,6 +4,7 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { BACKEND_URL } from "@/utils/Constants";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -15,13 +16,13 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post(
-                "http://localhost:3000/api/login",
-                { email, password }
-            );
+            const response = await axios.post(`${BACKEND_URL}/api/login`, {
+                email,
+                password,
+            });
             if (response.status === 200) {
                 // Handle successful login
-                console.log(response.data);
+                // console.log(response.data);
                 const { user, token } = response.data;
                 const dataToStore = {
                     userData: user,
@@ -31,7 +32,7 @@ const Login = () => {
                 localStorage.setItem("Data", JSON.stringify(dataToStore));
 
                 // Redirect to dashboard
-                navigate("/dashboard/:id");
+                navigate("/dashboard");
             } else {
                 console.error("Login failed:", response.data);
             }
