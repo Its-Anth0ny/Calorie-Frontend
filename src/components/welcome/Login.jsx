@@ -22,8 +22,6 @@ const Login = () => {
                 password,
             });
             if (response.status === 200) {
-                // Handle successful login
-                // console.log(response.data);
                 const { user, token } = response.data;
                 const dataToStore = {
                     userData: user,
@@ -31,12 +29,10 @@ const Login = () => {
                 };
                 // Store user data and token in local storage
                 localStorage.setItem("Data", JSON.stringify(dataToStore));
-
                 toast({
                     description: "Login successful!",
                     duration: 1000,
                 });
-
                 // Redirect to dashboard
                 navigate("/dashboard");
             } else {

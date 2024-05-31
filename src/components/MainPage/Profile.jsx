@@ -1,14 +1,8 @@
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "../ui/card";
-import { Separator } from "../ui/separator";
-import { Button } from "../ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useSelector } from "react-redux";
+import { Label } from "../ui/label";
+import { Progress } from "../ui/progress";
 
 const ProfilePage = () => {
     const username = useSelector((state) => state.userData.username);
@@ -23,88 +17,61 @@ const ProfilePage = () => {
         lifestyle: userData.lifestyle,
     };
     // console.log(user);
+    const progress = Math.min(
+        (user.currentWeight / user.targetWeight) * 100,
+        100
+    );
 
     return (
-        <div className="min-h-screen p-6 ">
-            <div className="max-w-4xl mx-auto">
-                <Card className="overflow-hidden rounded-lg shadow-lg">
-                    <CardHeader className="flex items-center justify-center p-6 text-white bg-gradient-to-r from-blue-500 to-teal-500">
-                        <Avatar className="size-20">
+        <div className="flex items-center justify-center min-h-[calc(100vh-75px)] font-sans leading-normal tracking-normal ">
+            <div className="container max-w-3xl p-5 mx-auto rounded-lg shadow-lg">
+                <Card className="p-6">
+                    <CardHeader className="flex items-center justify-center mb-6">
+                        <Avatar className="flex items-center justify-center w-20 h-20 text-4xl font-bold rounded-full bg-light-orange">
                             <AvatarImage
                                 src={`https://ui-avatars.com/api/?name=${username}`}
                             />
                             <AvatarFallback>NA</AvatarFallback>
                         </Avatar>
-                        <div className="text-center">
-                            <CardTitle className="text-2xl font-bold">
+                        <div className="">
+                            <CardTitle className="text-3xl font-semibold capitalize">
                                 {username}
                             </CardTitle>
-                            <CardDescription>{user.lifestyle}</CardDescription>
                         </div>
                     </CardHeader>
-                    <CardContent className="p-6">
-                        <div className="mb-4">
-                            <h2 className="text-xl font-semibold">About Me</h2>
-                            <Separator className="my-2" />
-                            <p className="text-gray-700 dark:text-gray-300">
-                                {user.lifestyle}
-                            </p>
-                        </div>
-                        <div className="mb-4">
-                            <h2 className="text-xl font-semibold">
-                                Basic Information
-                            </h2>
-                            <Separator className="my-2" />
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="text-gray-700 dark:text-gray-300">
-                                    <p>
-                                        <span className="font-semibold">
-                                            Current Weight:
-                                        </span>{" "}
-                                        {user.currentWeight}
-                                    </p>
-                                    <p>
-                                        <span className="font-semibold">
-                                            Target Weight:
-                                        </span>{" "}
-                                        {user.targetWeight}
-                                    </p>
-                                    <p>
-                                        <span className="font-semibold">
-                                            Height:
-                                        </span>{" "}
-                                        {user.height}
-                                    </p>
-                                </div>
-                                <div className="text-gray-700 dark:text-gray-300">
-                                    <p>
-                                        <span className="font-semibold">
-                                            Days Using:
-                                        </span>{" "}
-                                        {user.daysUsing}
-                                    </p>
-                                    {/* <p>
-                                        <span className="font-semibold">
-                                            Email:
-                                        </span>{" "}
-                                        {user.email}
-                                    </p> */}
-                                    {/* <p>
-                                        <span className="font-semibold">
-                                            Phone:
-                                        </span>{" "}
-                                        {user.phone}
-                                    </p> */}
-                                </div>
+                    <CardContent>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <Label className="">Gender:</Label>
+                                <p className="capitalize">{user.gender}</p>
+                            </div>
+                            <div>
+                                <Label className="">Age:</Label>
+                                <p className="">{user.age}</p>
+                            </div>
+                            <div>
+                                <Label className="">Weight:</Label>
+                                <p className="">{user.currentWeight} kg</p>
+                            </div>
+                            <div>
+                                <Label className="">Height:</Label>
+                                <p className="">{user.height} cm</p>
+                            </div>
+                            <div>
+                                <Label className="">Target Weight:</Label>
+                                <p className="">{user.targetWeight} kg</p>
+                            </div>
+                            <div>
+                                <Label className="">Lifestyle:</Label>
+                                <p className="capitalize">{user.lifestyle}</p>
                             </div>
                         </div>
-                        <div className="flex space-x-4">
-                            <Button className="text-white bg-blue-500 hover:bg-blue-600">
-                                Follow
-                            </Button>
-                            <Button className="text-white bg-teal-500 hover:bg-teal-600">
-                                Message
-                            </Button>
+                        <div className="mt-6">
+                            <Label className="">Weight Progress:</Label>
+                            <Progress className="" value={progress} max={100} />
+                            <p className="mt-2 ">
+                                {progress.toFixed(1)}% to target weight
+                            </p>
                         </div>
                     </CardContent>
                 </Card>

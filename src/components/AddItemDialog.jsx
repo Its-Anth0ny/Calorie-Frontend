@@ -21,7 +21,6 @@ const AddItemDialog = () => {
     const [query, setQuery] = useState("");
     const [error, setError] = useState(null);
     const [dailyCalories, setDailyCalories] = useState(0);
-    const [nutritionInfo, setNutritionInfo] = useState(null);
     const dispatch = useDispatch();
 
     const fetchNutritionInfo = async () => {
@@ -41,7 +40,7 @@ const AddItemDialog = () => {
             );
 
             const data = await response.json();
-            // console.log(data);
+            console.log(data);
             // setNutritionInfo(data);
             // Update daily calorie intake
             if (data && data.foods && data.foods.length > 0) {
@@ -74,6 +73,7 @@ const AddItemDialog = () => {
                         nutritionInfo.foods.map((food) => ({
                             userId: userId,
                             foodname: food.food_name,
+                            foodimg: food.photo.highres,
                             quantity: food.serving_qty,
                             servingSize: food.serving_weight_grams,
                             calories: food.nf_calories,
@@ -98,11 +98,7 @@ const AddItemDialog = () => {
                 });
             }
 
-            // Clear query and nutritionInfo after successful submission
             setQuery("");
-            setNutritionInfo(null);
-
-            // Fetch nutrition info for the next query
         } catch (error) {
             setError("Error logging food intake");
         }

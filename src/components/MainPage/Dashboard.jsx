@@ -12,7 +12,7 @@ const Dashboard = () => {
     const getFoodItems = async () => {
         try {
             if (userId) {
-                console.log(`${BACKEND_URL}/api/user-food-intake/${userId}`);
+                // console.log(`${BACKEND_URL}/api/user-food-intake/${userId}`);
                 const response = await axios.get(
                     `${BACKEND_URL}/api/user-food-intake/${userId}`
                 );
@@ -22,9 +22,10 @@ const Dashboard = () => {
                 }
             }
         } catch (error) {
-            console.log("errorasd", error);
+            console.log("error", error);
         }
     };
+
     useEffect(() => {
         getFoodItems();
     }, [userId]);

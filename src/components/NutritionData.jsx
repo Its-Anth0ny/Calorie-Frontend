@@ -10,11 +10,17 @@ import {
 import { Progress } from "@/components/ui/progress";
 import ProgressProvider from "@/utils/ProgressProvider";
 import { Label } from "./ui/label";
+import { useSelector } from "react-redux";
 
 const NutritionData = () => {
+    const calorieData = useSelector(
+        (state) => state.nutritionData.nutritionData
+    );
+    console.log("calorieData", calorieData);
     const calories = 100;
-    const targetCalories = 2000;
-    const percentage = (calories / targetCalories) * 100;
+    // const targetCalories = 2000;
+    const percentage = (calories / calorieData.tdee) * 100;
+    const limitedPercentage = parseFloat(percentage.toFixed(2));
     return (
         <div className="flex flex-col items-center justify-center col-span-5 px-24 pb-4">
             <Card className="w-full px-4 py-2">
@@ -23,7 +29,10 @@ const NutritionData = () => {
                     <CardDescription>Card Description</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <ProgressProvider valueStart={0} valueEnd={percentage}>
+                    <ProgressProvider
+                        valueStart={0}
+                        valueEnd={limitedPercentage}
+                    >
                         {(value) => (
                             <CircularProgressbarWithChildren
                                 valueStart
@@ -44,11 +53,11 @@ const NutritionData = () => {
                 <CardFooter>
                     <div className="w-full">
                         <Label>Total Protein</Label>
-                        <Progress value={percentage} />
+                        <Progress value={calorieData.dailyProtein} />
                         <Label>Total Carbs</Label>
-                        <Progress value={percentage} />
+                        <Progress value={calorieData.dailyCarbs} />
                         <Label>Total Fats</Label>
-                        <Progress value={percentage} />
+                        <Progress value={calorieData.dailyFats} />
                     </div>
                 </CardFooter>
             </Card>
