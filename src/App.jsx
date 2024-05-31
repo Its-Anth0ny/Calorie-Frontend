@@ -8,6 +8,7 @@ import Footer from "./components/Footer";
 import MainPage from "./pages/MainPage";
 import Login from "./components/welcome/Login";
 import Register from "./components/welcome/Register";
+import { Toaster } from "./components/ui/toaster";
 
 const App = () => {
     const appRouter = createBrowserRouter([
@@ -38,6 +39,7 @@ const App = () => {
         <div className="">
             <RouterProvider router={appRouter} />
             <Footer />
+            <Toaster />
         </div>
     );
 };

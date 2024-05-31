@@ -10,15 +10,19 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { BACKEND_URL } from "@/utils/Constants";
+import { setItemData } from "@/utils/itemDataSlice";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Plus } from "lucide-react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const AddItemDialog = () => {
+    const userId = useSelector((state) => state.userData.userid);
     const [query, setQuery] = useState("");
     const [error, setError] = useState(null);
     const [dailyCalories, setDailyCalories] = useState(0);
     const [nutritionInfo, setNutritionInfo] = useState(null);
+    const dispatch = useDispatch();
 
     const fetchNutritionInfo = async () => {
         try {
@@ -37,7 +41,7 @@ const AddItemDialog = () => {
             );
 
             const data = await response.json();
-            console.log(data);
+            // console.log(data);
             // setNutritionInfo(data);
             // Update daily calorie intake
             if (data && data.foods && data.foods.length > 0) {
@@ -58,9 +62,7 @@ const AddItemDialog = () => {
     };
 
     const handleSubmit = async (nutritionInfo) => {
-        // event.preventDefault();
         try {
-            // await fetchNutritionInfo();
             const response = await fetch(
                 `${BACKEND_URL}/api/user-food-intake`,
                 {
@@ -68,20 +70,12 @@ const AddItemDialog = () => {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    // body: JSON.stringify({
-                    //     // Replace with the actual user ID
-                    //     foodName: nutritionInfo.foods[0].food_name,
-                    //     quantity: nutritionInfo.foods.reduce((total, food) => total + food.serving_qty, 0), // Sum of serving quantities of all foods
-                    //     servingSize: 'serving', // Assuming serving size is constant for all foods
-                    //     calories: nutritionInfo.foods[0].nf_calories,
-                    //     timestamp: new Date()
-                    // })
                     body: JSON.stringify(
                         nutritionInfo.foods.map((food) => ({
-                            username: "testuser", // Replace with the actual username
-                            foodName: food.food_name,
+                            userId: userId,
+                            foodname: food.food_name,
                             quantity: food.serving_qty,
-                            servingSize: food.serving_weight_grams, // Assuming serving size is constant for all foods
+                            servingSize: food.serving_weight_grams,
                             calories: food.nf_calories,
                             proteins: food.nf_protein,
                             carbs: food.nf_total_carbohydrate,
@@ -93,9 +87,15 @@ const AddItemDialog = () => {
                     ),
                 }
             );
-            // console.log(response);
+            const resData = await response.json();
             if (!response.ok) {
                 throw new Error("Failed to log food intake");
+            } else {
+                // console.log(resData.data);
+                resData.data.forEach((food) => {
+                    // console.log(food);
+                    dispatch(setItemData(food));
+                });
             }
 
             // Clear query and nutritionInfo after successful submission
@@ -121,7 +121,7 @@ const AddItemDialog = () => {
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader>
-                    <DialogTitle cla>Add Items</DialogTitle>
+                    <DialogTitle>Add Items</DialogTitle>
                     <DialogDescription>
                         Provide description of your meal.
                     </DialogDescription>
@@ -131,7 +131,7 @@ const AddItemDialog = () => {
                         id="name"
                         value={query}
                         onChange={handleQuery}
-                        placeholder="I had a banana shake with 1 tbsp sugar and 1 tbsp honey..."
+                        placeholder="I had a banana, an apple, and a glass of milk..."
                         className="col-span-3"
                     />
                 </div>

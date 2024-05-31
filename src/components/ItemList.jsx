@@ -2,7 +2,7 @@ import AddItemDialog from "./AddItemDialog";
 import { ScrollArea } from "./ui/scroll-area";
 import { Separator } from "./ui/separator";
 
-const AddItemList = (fetchNutritionInfo) => {
+const ItemList = (fetchNutritionInfo) => {
     const items = [
         {
             id: 1,
@@ -101,4 +101,4 @@ const AddItemList = (fetchNutritionInfo) => {
     );
 };
 
-export default AddItemList;
+export default ItemList;

@@ -5,16 +5,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BACKEND_URL } from "@/utils/Constants";
+import { useToast } from "../ui/use-toast";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loggedIn, setLoggedIn] = useState(false);
     const navigate = useNavigate();
+    const { toast } = useToast();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         try {
             const response = await axios.post(`${BACKEND_URL}/api/login`, {
                 email,
@@ -30,6 +31,11 @@ const Login = () => {
                 };
                 // Store user data and token in local storage
                 localStorage.setItem("Data", JSON.stringify(dataToStore));
+
+                toast({
+                    description: "Login successful!",
+                    duration: 1000,
+                });
 
                 // Redirect to dashboard
                 navigate("/dashboard");

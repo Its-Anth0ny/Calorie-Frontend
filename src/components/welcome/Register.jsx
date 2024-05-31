@@ -1,26 +1,37 @@
 import { useState } from "react";
 import axios from "axios";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Button } from "../ui/button";
 import { BACKEND_URL } from "@/utils/Constants";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { useToast } from "../ui/use-toast";
 
 const Register = () => {
     const [show, setShow] = useState(false);
     const [userId, setUserId] = useState("");
     const [step, setStep] = useState(1);
+    const { toast } = useToast();
+    const navigate = useNavigate();
     const [userData, setUserData] = useState({
-        age: "",
-        weight: "",
-        height: "",
-        lifestyle: "",
-        targetWeight: "",
-        gender: "",
         username: "",
         email: "",
         password: "",
+        age: "",
+        height: "",
+        weight: "",
+        targetWeight: "",
+        gender: "",
+        lifestyle: "",
         weightLossRate: "",
         weightGainRate: "",
     });
@@ -32,7 +43,6 @@ const Register = () => {
 
     const handleSubmit2 = async (e) => {
         e.preventDefault();
-
         const {
             username,
             email,
@@ -47,8 +57,8 @@ const Register = () => {
             weightGainRate,
         } = userData;
 
-        await axios
-            .post(`${BACKEND_URL}/api/register`, {
+        try {
+            const response = await axios.post(`${BACKEND_URL}/api/register`, {
                 username,
                 email,
                 password,
@@ -60,9 +70,25 @@ const Register = () => {
                 lifestyle,
                 weightLossRate,
                 weightGainRate,
-            })
-            .then((window.location.href = "/login"))
-            .catch((err) => console.log(err));
+            });
+            if (response.status === 201) {
+                toast({
+                    title: "Registration successful",
+                    description: "Please login to continue",
+                });
+                navigate("/login");
+            } else {
+                toast({
+                    title: "Registration failed",
+                    description: "Please try again",
+                    type: "error",
+                });
+                navigate("/register");
+                console.error("Signup failed:", response.data);
+            }
+        } catch (error) {
+            console.error("Signup error:", error);
+        }
     };
 
     const handleChange = (e) => {
@@ -95,32 +121,26 @@ const Register = () => {
                             />
                         </div>
                         <div className="mb-4">
-                            <Label className="block text-sm font-medium">
+                            <Label className="block mb-1 text-sm font-medium">
                                 Gender
                             </Label>
                             <RadioGroup
                                 value={userData.gender}
-                                onChange={(e) =>
+                                onValueChange={(e) =>
                                     handleChange({
                                         target: { name: "gender", value: e },
                                     })
                                 }
                                 className="flex gap-4"
                             >
-                                <Label className="flex items-center">
-                                    <RadioGroupItem
-                                        value="male"
-                                        className="form-radio"
-                                    />
-                                    <span className="ml-2">Male</span>
-                                </Label>
-                                <Label className="flex items-center">
-                                    <RadioGroupItem
-                                        value="female"
-                                        className="form-radio"
-                                    />
-                                    <span className="ml-2">Female</span>
-                                </Label>
+                                <div className="flex items-center space-x-2">
+                                    <RadioGroupItem value="male" id="r1" />
+                                    <Label htmlFor="r1">Male</Label>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                    <RadioGroupItem value="female" id="r2" />
+                                    <Label htmlFor="r2">Female</Label>
+                                </div>
                             </RadioGroup>
                         </div>
                         <div className="mb-4">
@@ -177,75 +197,103 @@ const Register = () => {
                             />
                         </div>
                         <div className="mb-4">
-                            <Label className="block text-sm font-medium">
+                            <Label className="block mb-1 text-sm font-medium">
                                 Lifestyle
                             </Label>
-                            <RadioGroup
+                            <Select
                                 value={userData.lifestyle}
-                                onChange={(e) =>
+                                onValueChange={(e) =>
                                     handleChange({
                                         target: { name: "lifestyle", value: e },
                                     })
                                 }
-                                className="flex flex-wrap gap-4"
                             >
-                                <Label className="flex items-center">
-                                    <RadioGroupItem
-                                        value="sedentary"
-                                        className="form-radio"
-                                    />
-                                    <span className="ml-2">Sedentary</span>
-                                </Label>
-                                <Label className="flex items-center">
-                                    <RadioGroupItem
-                                        value="lightlyactive"
-                                        className="form-radio"
-                                    />
-                                    <span className="ml-2">Lightly Active</span>
-                                </Label>
-                                <Label className="flex items-center">
-                                    <RadioGroupItem
-                                        value="active"
-                                        className="form-radio"
-                                    />
-                                    <span className="ml-2">Active</span>
-                                </Label>
-                                <Label className="flex items-center">
-                                    <RadioGroupItem
-                                        value="veryactive"
-                                        className="form-radio"
-                                    />
-                                    <span className="ml-2">Very Active</span>
-                                </Label>
-                            </RadioGroup>
+                                <SelectTrigger className="w-[180px]">
+                                    <SelectValue placeholder="Current lifestyle" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectItem value="sedentary">
+                                            Sedentary
+                                        </SelectItem>
+                                        <SelectItem value="lightlyactive">
+                                            Lightly Active
+                                        </SelectItem>
+                                        <SelectItem value="moderatelyactive">
+                                            Moderately Active
+                                        </SelectItem>
+                                        <SelectItem value="veryactive">
+                                            Very Active
+                                        </SelectItem>
+                                        <SelectItem value="extremelyactive">
+                                            Extremely Active
+                                        </SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
                         </div>
+
                         {userData.weight > userData.targetWeight ? (
                             <div className="mb-4">
-                                <Label className="block text-sm font-medium">
+                                <Label className="block mb-1 text-sm font-medium">
                                     Weight Loss Rate (Kg per week)
                                 </Label>
-                                <Input
-                                    id="weightLossRate"
-                                    name="weightLossRate"
-                                    type="number"
+                                <RadioGroup
                                     value={userData.weightLossRate}
-                                    onChange={handleChange}
-                                    className="block w-full p-2 mt-1"
-                                />
+                                    onValueChange={(e) =>
+                                        handleChange({
+                                            target: {
+                                                name: "weightLossRate",
+                                                value: e,
+                                            },
+                                        })
+                                    }
+                                    className="flex flex-wrap gap-4"
+                                >
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value={0.25} id="r1" />
+                                        <Label htmlFor="r1">0.25</Label>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value={0.5} id="r2" />
+                                        <Label htmlFor="r2">0.5</Label>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value={1} id="r3" />
+                                        <Label htmlFor="r3">1</Label>
+                                    </div>
+                                </RadioGroup>
                             </div>
                         ) : (
                             <div className="mb-4">
-                                <Label className="block text-sm font-medium">
+                                <Label className="block mb-1.5 text-sm font-medium">
                                     Weight Gain Rate (Kg per week)
                                 </Label>
-                                <Input
-                                    id="weightGainRate"
-                                    name="weightGainRate"
-                                    type="number"
+                                <RadioGroup
                                     value={userData.weightGainRate}
-                                    onChange={handleChange}
-                                    className="block w-full p-2 mt-1"
-                                />
+                                    onValueChange={(e) =>
+                                        handleChange({
+                                            target: {
+                                                name: "weightGainRate",
+                                                value: e,
+                                            },
+                                        })
+                                    }
+                                    className="flex flex-wrap gap-4"
+                                >
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value={0.25} id="r1" />
+                                        <Label htmlFor="r1">0.25</Label>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value={0.5} id="r2" />
+                                        <Label htmlFor="r2">0.5</Label>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value={1} id="r3" />
+                                        <Label htmlFor="r3">1</Label>
+                                    </div>
+                                </RadioGroup>
                             </div>
                         )}
                     </div>
@@ -315,7 +363,7 @@ const Register = () => {
             ) : (
                 <div className="grid min-h-screen grid-cols-12">
                     <div
-                        className="flex flex-col items-center justify-center col-span-7 p-10 bg-center bg-cover"
+                        className="flex flex-col items-center justify-center col-span-7 p-10 text-white bg-center bg-cover"
                         style={{
                             backgroundImage:
                                 "url('https://images.unsplash.com/photo-1528720208104-3d9bd03cc9d4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTB8fGZpdG5lc3N8ZW58MHx8MHx8fDA%3D')",
