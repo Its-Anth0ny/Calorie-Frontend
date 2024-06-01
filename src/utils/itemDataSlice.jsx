@@ -9,11 +9,11 @@ const itemDataSlice = createSlice({
         setInitialData: (state, action) => {
             state.fooditems = action.payload;
         },
-        setItemData: (state, action) => {
+        setNewItemData: (state, action) => {
             state.fooditems.push(action.payload);
         },
     },
 });
 
-export const { setInitialData, setItemData } = itemDataSlice.actions;
+export const { setInitialData, setNewItemData } = itemDataSlice.actions;
 export default itemDataSlice.reducer;

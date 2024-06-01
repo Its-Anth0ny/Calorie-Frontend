@@ -9,6 +9,7 @@ import { setNutritionData } from "@/utils/nutritionDataSlice";
 
 const Header = () => {
     const dispatch = useDispatch();
+
     const dailygoals = async (userId) => {
         try {
             const response = await axios.get(`${BACKEND_URL}/api/${userId}`);
@@ -18,16 +19,14 @@ const Header = () => {
                 // console.log("dailydata", dailydata);
                 dispatch(
                     setNutritionData({
-                        data: {
-                            userId: dailydata.user,
-                            bmr: dailydata.bmr,
-                            tdee: dailydata.tdee,
-                            targetCaloriesLoss: dailydata.targetCaloriesLoss,
-                            targetCaloriesGain: dailydata.targetCaloriesGain,
-                            dailyProtein: dailydata.dailyProtein,
-                            dailyFats: dailydata.dailyFats,
-                            dailyCarbs: dailydata.dailyCarbs,
-                        },
+                        userId: dailydata.user,
+                        bmr: dailydata.bmr,
+                        tdee: dailydata.tdee,
+                        targetCaloriesLoss: dailydata.targetCaloriesLoss,
+                        targetCaloriesGain: dailydata.targetCaloriesGain,
+                        dailyProtein: dailydata.dailyProtein,
+                        dailyFats: dailydata.dailyFats,
+                        dailyCarbs: dailydata.dailyCarbs,
                     })
                 );
             }

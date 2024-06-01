@@ -10,7 +10,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { BACKEND_URL } from "@/utils/Constants";
-import { setItemData } from "@/utils/itemDataSlice";
+import { setNewItemData } from "@/utils/itemDataSlice";
+import { setNewItemNutrition } from "@/utils/presentNutritionSlice";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Plus } from "lucide-react";
 import { useState } from "react";
@@ -40,8 +41,7 @@ const AddItemDialog = () => {
             );
 
             const data = await response.json();
-            console.log(data);
-            // setNutritionInfo(data);
+            // console.log(data);
             // Update daily calorie intake
             if (data && data.foods && data.foods.length > 0) {
                 const totalCalories = data.foods.reduce(
@@ -94,7 +94,16 @@ const AddItemDialog = () => {
                 // console.log(resData.data);
                 resData.data.forEach((food) => {
                     // console.log(food);
-                    dispatch(setItemData(food));
+                    dispatch(setNewItemData(food));
+                    dispatch(
+                        setNewItemNutrition({
+                            calories: food.calories,
+                            protein: food.proteins,
+                            fats: food.fats,
+                            carbs: food.carbs,
+                            fiber: food.fiber,
+                        })
+                    );
                 });
             }
 

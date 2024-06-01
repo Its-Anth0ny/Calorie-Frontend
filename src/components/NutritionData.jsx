@@ -13,14 +13,21 @@ import { Label } from "./ui/label";
 import { useSelector } from "react-redux";
 
 const NutritionData = () => {
-    const calorieData = useSelector(
-        (state) => state.nutritionData.nutritionData
-    );
-    console.log("calorieData", calorieData);
-    const calories = 100;
-    // const targetCalories = 2000;
-    const percentage = (calories / calorieData.tdee) * 100;
-    const limitedPercentage = parseFloat(percentage.toFixed(2));
+    const calorieGoalData = useSelector((state) => state.nutritionData);
+    // console.log("calorieGoalData", calorieGoalData);
+    const calorieIntakeData = useSelector((state) => state.presentNutrition);
+    const [perCalories, perProtein, perFats, perCarbs] = [
+        (calorieIntakeData.calories / calorieGoalData.tdee) * 100,
+        (calorieIntakeData.protein / calorieGoalData.dailyProtein) * 100,
+        (calorieIntakeData.fats / calorieGoalData.dailyFats) * 100,
+        (calorieIntakeData.carbs / calorieGoalData.dailyCarbs) * 100,
+    ];
+    const parsedData = [
+        parseFloat(perCalories.toFixed(2)),
+        parseFloat(perProtein.toFixed(2)),
+        parseFloat(perFats.toFixed(2)),
+        parseFloat(perCarbs.toFixed(2)),
+    ];
     return (
         <div className="flex flex-col items-center justify-center col-span-5 px-24 pb-4">
             <Card className="w-full px-4 py-2">
@@ -29,10 +36,7 @@ const NutritionData = () => {
                     <CardDescription>Card Description</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <ProgressProvider
-                        valueStart={0}
-                        valueEnd={limitedPercentage}
-                    >
+                    <ProgressProvider valueStart={0} valueEnd={parsedData[0]}>
                         {(value) => (
                             <CircularProgressbarWithChildren
                                 valueStart
@@ -53,11 +57,11 @@ const NutritionData = () => {
                 <CardFooter>
                     <div className="w-full">
                         <Label>Total Protein</Label>
-                        <Progress value={calorieData.dailyProtein} />
+                        <Progress value={parsedData[1]} />
                         <Label>Total Carbs</Label>
-                        <Progress value={calorieData.dailyCarbs} />
+                        <Progress value={parsedData[3]} />
                         <Label>Total Fats</Label>
-                        <Progress value={calorieData.dailyFats} />
+                        <Progress value={parsedData[2]} />
                     </div>
                 </CardFooter>
             </Card>
