@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
@@ -375,19 +375,18 @@ const Register = () => {
         <div>
             <div className="grid min-h-screen grid-cols-12">
                 <div
-                    className="flex flex-col items-center justify-center col-span-7 p-10 text-white bg-center bg-cover"
+                    className="flex flex-col items-center justify-between col-span-7 p-6 text-white bg-center bg-cover"
                     style={{
                         backgroundImage:
                             "url('https://images.unsplash.com/photo-1528720208104-3d9bd03cc9d4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTB8fGZpdG5lc3N8ZW58MHx8MHx8fDA%3D')",
                     }}
                 >
-                    <div className="mb-4 text-3xl font-bold">Acme Inc</div>
-                    <p className="mb-8 text-xl">
-                        This library has saved me countless hours of work and
-                        helped me deliver stunning designs to my clients faster
-                        than ever before.
+                    <div className="w-full text-3xl font-bold">FitSwipe</div>
+                    <p className="text-center text-md ">
+                        Eat breakfast like a king, lunch like a prince and
+                        dinner like a pauper.
+                        <p className="mt-2 text-sm font-light">-Adelle Davis</p>
                     </p>
-                    <p className="text-sm">Sofia Davis</p>
                 </div>
                 <div className="flex flex-col items-center justify-center col-span-5">
                     <h2 className="text-[50px]">Register</h2>

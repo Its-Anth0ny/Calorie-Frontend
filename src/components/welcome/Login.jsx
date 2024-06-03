@@ -47,21 +47,18 @@ const Login = () => {
     return (
         <div className="grid min-h-screen grid-cols-12">
             <div
-                className="flex flex-col items-center justify-center col-span-7 p-10 bg-center bg-cover"
+                className="flex flex-col items-center justify-between col-span-7 p-6 bg-center bg-cover"
                 style={{
                     backgroundImage:
                         "url('https://images.unsplash.com/photo-1528720208104-3d9bd03cc9d4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTB8fGZpdG5lc3N8ZW58MHx8MHx8fDA%3D')",
                 }}
             >
-                <div className="mb-4 text-3xl font-bold text-white">
-                    Acme Inc
-                </div>
-                <p className="mb-8 text-xl text-white">
-                    This library has saved me countless hours of work and helped
-                    me deliver stunning designs to my clients faster than ever
-                    before.
+                <div className="w-full text-3xl font-bold">FitSwipe</div>
+                <p className="text-center text-md ">
+                    If you keep good food in your fridge, you will eat good
+                    food.
+                    <p className="mt-2 text-sm font-light">-Errick Mcadams</p>
                 </p>
-                <p className="text-sm text-white">Sofia Davis</p>
             </div>
             <div className="flex flex-col items-center justify-center col-span-5">
                 <h2 className="text-[50px] ">Login</h2>
