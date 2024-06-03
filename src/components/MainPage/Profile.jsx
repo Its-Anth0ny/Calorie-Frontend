@@ -68,7 +68,12 @@ const ProfilePage = () => {
                         </div>
                         <div className="mt-6">
                             <Label className="">Weight Progress:</Label>
-                            <Progress className="" value={progress} max={100} />
+                            <Progress
+                                indicatorClr="bg-orange-500"
+                                primitiveClr="bg-orange-200"
+                                value={progress}
+                                max={100}
+                            />
                             <p className="mt-2 ">
                                 {progress.toFixed(1)}% to target weight
                             </p>

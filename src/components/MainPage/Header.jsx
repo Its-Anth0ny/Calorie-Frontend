@@ -38,12 +38,14 @@ const Header = () => {
     const decodeToken = (data, token) => {
         try {
             const decoded = JSON.parse(atob(token.split(".")[1]));
+            console.log("decoded", data);
             if (decoded && decoded.userId) {
                 dailygoals(decoded.userId);
                 dispatch(
                     setUserData({
                         userId: data.userData._id,
-                        username: data.userData.username,
+                        userName: data.userData.username,
+                        userEmail: data.userData.email,
                         data: {
                             gender: data.userData.gender,
                             age: data.userData.age,

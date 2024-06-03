@@ -5,6 +5,7 @@ const userDataSlice = createSlice({
     initialState: {
         userid: "",
         username: "",
+        useremail: "",
         data: {
             gender: null,
             age: null,
@@ -18,7 +19,8 @@ const userDataSlice = createSlice({
     reducers: {
         setUserData: (state, action) => {
             state.userid = action.payload.userId;
-            state.username = action.payload.username;
+            state.username = action.payload.userName;
+            state.useremail = action.payload.userEmail;
             state.data = action.payload.data;
         },
     },
