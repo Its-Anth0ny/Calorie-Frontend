@@ -48,13 +48,12 @@ const NutritionData = () => {
     ];
     return (
         <div className="flex flex-col items-center justify-center col-span-5 px-24 pb-4">
-            <Card className="w-full px-4 py-2">
+            <Card className="w-full px-4 py-2 bg-gradient-to-br from-orange-950 to to-orange-400">
                 <CardHeader>
                     <CardTitle>
                         Total Calorie Intake:{" "}
                         {` ( ${parsedCalories[0]} / ${parsedCalories[1]} )`}
                     </CardTitle>
-                    <CardDescription>Card Description</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <ProgressProvider valueStart={0} valueEnd={parsedData[0]}>
@@ -83,7 +82,7 @@ const NutritionData = () => {
                                     pathColor:
                                         calorieIntakeData.calories <=
                                         calorieGoalData.tdee
-                                            ? `rgba(11, 156, 49, ${value / 20})`
+                                            ? `rgba(11, 156, 49, ${value / 8})`
                                             : `#EE4B2B`,
                                 })}
                             >
